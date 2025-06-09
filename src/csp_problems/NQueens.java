@@ -3,37 +3,37 @@ package csp_problems;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class NQueens implements CSPProblem<Integer,Integer>{
+public class NQueens implements CSPProblem<Integer, Integer> {
     private final int N;
     private final List<Integer> DEFAULT_DOMAIN;
 
-    public NQueens(int n){
+    public NQueens(int n) {
         this.N = n;
         DEFAULT_DOMAIN = IntStream.rangeClosed(1, N)
-                                  .boxed()
-                                  .toList();
+                .boxed()
+                .toList();
     }
 
-    public Map<Integer, List<Integer>> getAllVariables(){
+    public Map<Integer, List<Integer>> getAllVariables() {
         Map<Integer, List<Integer>> allVariables = new HashMap<>();
-        for(int i=1; i<=N; i++){
+        for (int i = 1; i <= N; i++) {
             List<Integer> domain = new ArrayList<>(DEFAULT_DOMAIN);
             allVariables.put(i, domain);
         }
         return allVariables;
     }
 
-    //For a given column i, the neighbors are all other columns j
+    // For a given column i, the neighbors are all other columns j
     // (where j != i).
-    public List<Integer> getNeighborsOf(Integer value){
-        List<Integer> neighbors =  new ArrayList<>(DEFAULT_DOMAIN);
+    public List<Integer> getNeighborsOf(Integer value) {
+        List<Integer> neighbors = new ArrayList<>(DEFAULT_DOMAIN);
         neighbors.remove(value);
         return neighbors;
     }
 
-    //NQueens does not have any pre-assigned variables
-    //so simply return an empty list.
-    public List<Integer> getPreAssignedVariables(){
+    // NQueens does not have any pre-assigned variables
+    // so simply return an empty list.
+    public List<Integer> getPreAssignedVariables() {
         return Collections.emptyList();
     }
 
@@ -56,11 +56,8 @@ public class NQueens implements CSPProblem<Integer,Integer>{
         return solution;
     }
 
-    public int getDomainSize(){
+    public int getDomainSize() {
         return N;
     }
-
-
-
 
 }

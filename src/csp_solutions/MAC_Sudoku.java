@@ -6,10 +6,9 @@ import csp_problems.*;
 import java.util.List;
 import java.util.Map;
 
+public class MAC_Sudoku extends MAC<Square, Integer> {
 
-public class MAC_Sudoku extends MAC<Square,Integer> {
-
-    public MAC_Sudoku(Sudoku problem){
+    public MAC_Sudoku(Sudoku problem) {
         super(problem);
     }
 
@@ -26,21 +25,46 @@ public class MAC_Sudoku extends MAC<Square,Integer> {
      *
      * @param tail The variable whose domain may be reduced (tail of the arc).
      * @param head The variable used to check for consistency (head of the arc).
-     * @return true if the domain of `tail` was revised (i.e., any values were removed),
+     * @return true if the domain of `tail` was revised (i.e., any values were
+     *         removed),
      *         false otherwise.
      *
-     * TODO: Implement the `revise()` method by checking each value in `tail`'s domain:
-     *  - If there is no value in `head`'s domain that satisfies the constraint
-     *    (i.e., being different from it), remove the value from `tail`'s domain.
-     *  - If any values are removed, return true; otherwise, return false.
+     *         Implement the `revise()` method by checking each value in
+     *         `tail`'s domain:
+     *         - If there is no value in `head`'s domain that satisfies the
+     *         constraint
+     *         (i.e., being different from it), remove the value from `tail`'s
+     *         domain.
+     *         - If any values are removed, return true; otherwise, return false.
      *
-     * Important:
-     *  - Be careful not to modify the `head`'s domain—only `tail`'s domain should change.
+     *         Important:
+     *         - Be careful not to modify the `head`'s domain—only `tail`'s domain
+     *         should change.
      */
     public boolean revise(Square tail, Square head) {
+        boolean revised = false;
 
+        Map<Square, List<Integer>> domains = getAllVariables();
+        List<Integer> tailDomain = domains.get(tail);
+        List<Integer> headDomain = domains.get(head);
+        Integer[] originalValues = tailDomain.toArray(new Integer[0]);
+
+        for (Integer v : originalValues) {
+            boolean hasSupport = false;
+            for (Integer w : headDomain) {
+                if (!v.equals(w)) {
+                    hasSupport = true;
+                    break;
+                }
+            }
+            if (!hasSupport) {
+                tailDomain.remove(v);
+                revised = true;
+            }
+        }
+
+        return revised;
     }
-
 
     /**
      * @param args
@@ -51,10 +75,10 @@ public class MAC_Sudoku extends MAC<Square,Integer> {
         MAC_Sudoku agent = new MAC_Sudoku(problem);
         System.out.println("loading puzzle from " + filename + "...");
         problem.printPuzzle(problem.getAllVariables());
-        if(agent.initAC3() && agent.search()){
+        if (agent.initAC3() && agent.search()) {
             System.out.println("Solution found:");
             problem.printPuzzle(agent.getAllVariables());
-        }else{
+        } else {
             System.out.println("Unable to find a solution.");
         }
     }
