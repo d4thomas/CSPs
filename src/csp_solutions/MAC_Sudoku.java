@@ -38,7 +38,7 @@ public class MAC_Sudoku extends MAC<Square, Integer> {
      *         - If any values are removed, return true; otherwise, return false.
      *
      *         Important:
-     *         - Be careful not to modify the `head`'s domain—only `tail`'s domain
+     *         - Be careful not to modify the `head`'s domain-only `tail`'s domain
      *         should change.
      */
     public boolean revise(Square tail, Square head) {
